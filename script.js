@@ -1,7 +1,8 @@
 const start = document.querySelector("#start");
 const stop = document.querySelector("#stop");
 const reset = document.querySelector("#reset");
-const colorCode = document.querySelector("#colorCode");
+const colorText = document.getElementById("color-text");
+const copyBtn = document.getElementById("copy-btn")
 const body = document.body;
 
 let timer = null;
@@ -22,7 +23,7 @@ function randomColor() {
 function changeColor() {
   const color = randomColor();
   body.style.backgroundColor = color;
-  colorCode.textContent = color;
+  colorText.textContent = color;
 }
 
 // Start button
@@ -55,10 +56,24 @@ reset.addEventListener("click", () => {
   timer = null;
   isRunning = false;
 
-  body.style.backgroundColor = "";
-  colorCode.textContent = "#FFFFFF";
+  body.style.backgroundColor = "#f4f6f8";
+  colorText.textContent = "#f4f6f8";
 
   start.disabled = false;
   stop.disabled = true;
   reset.disabled = true;
+});
+
+// copy clipboard
+let timeoutId;
+
+copyBtn.addEventListener("click", () => {
+  navigator.clipboard.writeText(colorText.textContent).then(() => {
+    copyBtn.innerHTML = '<i class="fa-solid fa-check" style="color: #198754;"></i> copied!';
+
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i>';
+    }, 1500);
+  });
 });
